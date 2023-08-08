@@ -15,5 +15,6 @@ public class UsersDto {
     private String email;
     private Departement departement;
     private boolean status;
+    private String password;
 
 }

@@ -16,4 +16,7 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
             "    WHERE t.project_id=:id",nativeQuery = true)
     List<Users>findAllUsersByProjectId(@Param("id")Long id);
 
+    @Query(value="SELECT * FROM users a WHERE a.email =:email" ,nativeQuery = true)
+    Users findByEmail(@Param("email")String email);
+
 }

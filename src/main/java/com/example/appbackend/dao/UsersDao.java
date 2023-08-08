@@ -5,6 +5,8 @@ import com.example.appbackend.dto.UserDepartementDto;
 import com.example.appbackend.dto.UsersDto;
 import com.example.appbackend.entities.Departement;
 import com.example.appbackend.entities.Users;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.List;
 

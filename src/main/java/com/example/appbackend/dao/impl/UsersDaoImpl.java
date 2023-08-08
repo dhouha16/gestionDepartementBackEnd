@@ -8,13 +8,21 @@ import com.example.appbackend.entities.Departement;
 import com.example.appbackend.entities.Users;
 import com.example.appbackend.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Repository
-public class UsersDaoImpl implements UsersDao {
-
+public class UsersDaoImpl implements UsersDao, UserDetailsService {
+    @Autowired
+    PasswordEncoder passwordEncoder;
     @Autowired
     UsersRepository usersRepository;
     @Autowired
@@ -27,6 +35,7 @@ public class UsersDaoImpl implements UsersDao {
         user.setEmail(usersDto.getEmail());
         user.setDepartement(usersDto.getDepartement());
         user.setStatus(usersDto.isStatus());
+        user.setPassword(passwordEncoder.encode(usersDto.getPassword()));
         usersRepository.save(user);
         return true;
     }
@@ -67,5 +76,16 @@ public class UsersDaoImpl implements UsersDao {
             return false;
     }
 
-
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserDetails userDetails = null;
+        Users user = usersRepository.findByEmail(username);
+        if ((user != null) ){
+            Collection<SimpleGrantedAuthority> autorities = new ArrayList<>();
+              autorities.add(new SimpleGrantedAuthority(user.getRole().getNomRole()));
+            userDetails= new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), autorities);
+            System.out.println("user {} password" + userDetails.getUsername());
+        }
+        return userDetails;
+    }
 }

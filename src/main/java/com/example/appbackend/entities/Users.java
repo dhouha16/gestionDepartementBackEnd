@@ -1,11 +1,11 @@
 package com.example.appbackend.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.List;
@@ -22,6 +22,7 @@ public class Users {
     private String lastName;
     private String email;
     private boolean status;
+    private String password;
     @ManyToOne
     @JoinColumn(name = "departement_id")
 
@@ -29,6 +30,11 @@ public class Users {
     @OneToMany(mappedBy = "users")
     @JsonManagedReference
     private List<Task> tasks ;
+
+    @ManyToOne
+    @JoinColumn(name="role")
+    @JsonIgnore
+    private Role role;
 
     public Users(Long id, String firstName, String lastName, String email, Departement departement) {
         this.id = id;
