@@ -1,6 +1,7 @@
 package com.example.appbackend.controlleur;
 
 import com.example.appbackend.dto.*;
+import com.example.appbackend.security.filter.JwtToken;
 import com.example.appbackend.service.DepartementService;
 import com.example.appbackend.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import java.util.List;
 public class ProjectController {
     @Autowired
     ProjectService projectService;
-
+    @JwtToken
     @PostMapping("")
     public ResponseEntity<Object> addProject(@RequestBody ProjectDto projectDto) {
         if (projectService.addProjectBydepartmentId(projectDto)==true) {
@@ -31,6 +32,7 @@ public class ProjectController {
                     "message", "project not created"));
 
     }
+    @JwtToken
     @GetMapping("users/{id}")
     public ResponseEntity<Object> getusersByProject(@PathVariable Long id){
         List<GetUserDto> usersDto=projectService.getUsersByProjectsAnddepartmentId(id);

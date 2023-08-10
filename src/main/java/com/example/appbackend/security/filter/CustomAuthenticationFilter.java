@@ -53,7 +53,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 .withSubject(user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis()+10000*60*1000))
                 .withIssuer(request.getRequestURL().toString())
-                .withArrayClaim("roles",roles.toArray(new String[roles.size()]))
+                .withArrayClaim("role",roles.toArray(new String[roles.size()]))
                 //   .withArrayClaim("admin",adminRepository.findByEmail(user.getUsername()))
                 .sign(algorithm);
         //chaque 30min on fait un nouvel token
@@ -63,7 +63,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         tokens.put("acess_token",access_token);
 
         tokens.put("userName",user.getUsername());
-        tokens.put("modules",roles.toArray(new String[roles.size()]));
+        tokens.put("role",user.getAuthorities().stream().findFirst().get().getAuthority());
         // tokens.put("roles",user.getAuthorities().stream().findFirst().get().getAuthority());
 
         //  tokens.put("admin",adminRepository.findByEmail(user.getUsername()));

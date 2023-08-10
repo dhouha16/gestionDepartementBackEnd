@@ -1,6 +1,7 @@
 package com.example.appbackend.controlleur;
 
 import com.example.appbackend.dto.*;
+import com.example.appbackend.security.filter.JwtToken;
 import com.example.appbackend.service.ProjectService;
 import com.example.appbackend.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import java.util.Collections;
 public class TaskController {
     @Autowired
     TaskService taskService;
-
+    @JwtToken
     @PostMapping("/{id}")
     public ResponseEntity<Object> addTasks(@PathVariable Long id ,@RequestBody GetProjectDto getProjectDto) {
         if (taskService.addTasksByProjectsId(id,getProjectDto)==true) {
@@ -29,7 +30,7 @@ public class TaskController {
                     "message", "project not created"));
 
     }
-
+    @JwtToken
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateTasks(@PathVariable Long id ,@RequestBody PostTaskDto postTaskDto) {
         if (taskService.updateTask(id,postTaskDto)==true) {
@@ -42,7 +43,7 @@ public class TaskController {
                     "message", "tasks not updated"));
 
     }
-
+    @JwtToken
     @GetMapping("/{id}")
     public ResponseEntity<Object> getProjectTasks(@PathVariable Long id){
         ProjectTasksDto projectTasksDto=taskService.getProjectTasks(id);

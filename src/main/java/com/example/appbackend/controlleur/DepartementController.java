@@ -4,6 +4,7 @@ import com.example.appbackend.dto.DepartementDto;
 import com.example.appbackend.dto.GetDepartementProjects;
 import com.example.appbackend.dto.UserDepartementDto;
 import com.example.appbackend.entities.Departement;
+import com.example.appbackend.security.filter.JwtToken;
 import com.example.appbackend.service.DepartementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ public class DepartementController {
 
     @Autowired
     DepartementService departementService;
-
+    @JwtToken
     @PostMapping("")
     public ResponseEntity<Object> addDepartement(@RequestBody DepartementDto departementDto) {
             if (departementService.addDepatement(departementDto)==true) {
@@ -34,6 +35,7 @@ public class DepartementController {
                         "message", "departement not created"));
 
     }
+    @JwtToken
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateDepartement(@PathVariable Long id,@RequestBody DepartementDto departementDto) {
         boolean status =departementService.updateDepatement(id,departementDto);
@@ -47,7 +49,7 @@ public class DepartementController {
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Collections.singletonMap(
                         "message", "departement not updated"));
     }
-
+    @JwtToken
     @GetMapping("")
     public ResponseEntity<Object> getAllDepartement(){
         List<Departement>allList=departementService.getAllDepartement();
@@ -57,7 +59,7 @@ public class DepartementController {
             return ResponseEntity.status(HttpStatus.OK).body( new ArrayList<>());
 
     }
-
+    @JwtToken
     @GetMapping("/{id}")
     public ResponseEntity<Object> getDepartementById(@PathVariable Long id){
         Departement departement=departementService.getDepartementById(id);
@@ -66,7 +68,7 @@ public class DepartementController {
         else
             return ResponseEntity.status(HttpStatus.OK).body( new ArrayList<>());
     }
-
+    @JwtToken
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteDepartement(@PathVariable Long id){
         if(departementService.deleteDepartement(id))
@@ -76,6 +78,7 @@ public class DepartementController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     Collections.singletonMap("message", "error"));
     }
+    @JwtToken
     @GetMapping("/users/{id}")
     public ResponseEntity<Object> getUsersDepartementById(@PathVariable Long id){
         UserDepartementDto departement=departementService.getUsersByDepartementId(id);
@@ -84,6 +87,7 @@ public class DepartementController {
         else
             return ResponseEntity.status(HttpStatus.OK).body( new Object());
     }
+    @JwtToken
     @PutMapping("/users/{id}")
     public ResponseEntity<Object> updateUsersDepartement(@PathVariable Long id,@RequestBody DepartementDto departementDto) {
         boolean status =departementService.updateUsersByDepartementId(departementDto,id);
@@ -94,7 +98,7 @@ public class DepartementController {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Collections.singletonMap(
                     "message", "departement not updated"));
     }
-
+    @JwtToken
     @GetMapping("/projects/{id}")
     public ResponseEntity<Object> getProjectsDepartement(@PathVariable Long id){
         GetDepartementProjects departement=departementService.getProjectBydepartmentId(id);
